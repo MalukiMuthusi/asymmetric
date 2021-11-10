@@ -7,7 +7,6 @@ import (
 
 func main() {
 	viper.AutomaticEnv()
-	// generate two prime numbers
 
 	cmd.Execute()
 }

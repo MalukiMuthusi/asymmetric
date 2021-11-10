@@ -15,7 +15,7 @@ var msg int
 
 var rootCmd = &cobra.Command{
 	Use:   "asymmetric-algorithm",
-	Short: "Asymmetric algorithm",
+	Short: "Asymmetric algorithm, encrypt and decrypt messages",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Alice Encrypting the message: %d\n", msg)
 
@@ -37,10 +37,10 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().IntVarP(&msg, "msg", "m", 2, "message")
-	rootCmd.PersistentFlags().IntVarP(&alicePrivateKey, "ap", "a", 5, "alice private key")
-	rootCmd.PersistentFlags().IntVarP(&alicePublicKey, "ab", "b", 14, "alice Public key")
+	rootCmd.PersistentFlags().IntVarP(&alicePrivateKey, "ap", "a", 5, "Alice private key")
+	rootCmd.PersistentFlags().IntVarP(&alicePublicKey, "ab", "b", 14, "Alice Public key")
 
-	rootCmd.PersistentFlags().IntVarP(&bobPrivateKey, "bp", "c", 11, "bob Private key")
+	rootCmd.PersistentFlags().IntVarP(&bobPrivateKey, "bp", "c", 11, "Bob Private key")
 	rootCmd.PersistentFlags().IntVarP(&bobPublicKey, "bb", "d", 14, "bob Public key")
 
 }

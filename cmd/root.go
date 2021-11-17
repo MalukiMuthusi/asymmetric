@@ -43,4 +43,6 @@ func init() {
 	rootCmd.PersistentFlags().IntVarP(&bobPrivateKey, "bp", "c", 11, "Bob Private key")
 	rootCmd.PersistentFlags().IntVarP(&bobPublicKey, "bb", "d", 14, "bob Public key")
 
+	rootCmd.AddCommand(GenerateCMD())
+
 }

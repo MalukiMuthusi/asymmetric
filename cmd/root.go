@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/malukimuthusi/asymmetric-algorithm/asymmetric"
+	"github.com/malukimuthusi/crypt"
 	"github.com/spf13/cobra"
 )
 
@@ -14,18 +14,18 @@ var bobPublicKey int
 var msg int
 
 var rootCmd = &cobra.Command{
-	Use:   "asymmetric-algorithm",
-	Short: "Asymmetric algorithm, encrypt and decrypt messages",
+	Use:   "asymmetric",
+	Short: "Asymmetric encrypt and decrypt messages",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Alice Encrypting the message: %d\n", msg)
 
-		cypher := asymmetric.Encrypt(msg, uint64(alicePrivateKey), uint64(bobPublicKey))
+		cypher := crypt.Encrypt(msg, uint64(alicePrivateKey), uint64(bobPublicKey))
 
 		fmt.Printf("Generated the cypher: %d\n", cypher)
 
 		fmt.Println("Bob will decrypt the cypher")
 
-		m := asymmetric.Decrypt(cypher, uint64(bobPrivateKey), uint64(alicePublicKey))
+		m := crypt.Decrypt(cypher, uint64(bobPrivateKey), uint64(alicePublicKey))
 
 		fmt.Printf("Bob decrypted and obtained the message: %d", m)
 	},

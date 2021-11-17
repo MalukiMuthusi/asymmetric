@@ -1,4 +1,4 @@
-package asymmetric
+package crypt
 
 import (
 	"math"

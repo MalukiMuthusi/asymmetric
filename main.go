@@ -4,7 +4,7 @@ package main
 // P15/81741/2017
 
 import (
-	"github.com/malukimuthusi/asymmetric-algorithm/cmd"
+	"github.com/malukimuthusi/asymmetric/cmd"
 	"github.com/spf13/viper"
 )
 

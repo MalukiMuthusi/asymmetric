@@ -1,6 +1,7 @@
 package generatekeys
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -31,16 +32,24 @@ func Phi(n, p, q int64) int64 {
 }
 
 // choose e, a value less than the midpoint n
-func E(n int64) int64 {
+func E(n, p, q int64) (int64, error) {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 
-	return (r.Int63n(n / 2))
+	s := r.Int63n(n / 2)
+
+	for i := s; i > 0; i-- {
+		if i%p != 0 && i%q != 0 {
+			return i, nil
+		}
+	}
+
+	return 0, fmt.Errorf("no value of E found")
 }
 
 func D(e, phi int64) int64 {
 	// d.e mod phi = 1
 
 	d := 1 / (e % phi)
-	
+
 	return d
 }

@@ -1,4 +1,4 @@
-module github.com/malukimuthusi/asymmetric-algorithm
+module github.com/malukimuthusi/asymmetric
 
 go 1.16
 

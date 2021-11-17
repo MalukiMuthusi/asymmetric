@@ -18,6 +18,8 @@ func GenerateCMD() *cobra.Command {
 
 			p, q := generatekeys.GeneratePrimeNumbers()
 
+			fmt.Printf("Values: P=%d, Q=%d\n", p, q)
+
 			// generate Alice's public key
 			n := generatekeys.Product(p, q)
 
@@ -32,8 +34,11 @@ func GenerateCMD() *cobra.Command {
 
 			fmt.Printf("Alice's Private Key is %d\n", e)
 
-			phi := generatekeys.Phi(n, p, q)
-			d := generatekeys.D(e, phi)
+			phi := generatekeys.Phi(p, q)
+			d, err := generatekeys.D(n, e, phi)
+			if err != nil {
+				log.Fatal(err)
+			}
 
 			fmt.Printf("Alice's Public Key is %d\n", d)
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/malukimuthusi/crypt"
+	"github.com/malukimuthusi/asymmetric/crypt"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,7 @@ var rootCmd = &cobra.Command{
 
 		m := crypt.Decrypt(cypher, uint64(bobPrivateKey), uint64(alicePublicKey))
 
-		fmt.Printf("Bob decrypted and obtained the message: %d", m)
+		fmt.Printf("Bob decrypted and obtained the message: %d\n", m)
 	},
 }
 

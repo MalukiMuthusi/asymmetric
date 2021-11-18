@@ -14,25 +14,25 @@ func GenerateCMD() *cobra.Command {
 		Use:   "generate",
 		Short: "Generate Public and private Keys",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Generate Private and Public Keys for alice")
+			fmt.Println("Generate n , e, d keys")
 
-			p, q := generatekeys.GeneratePrimeNumbers()
+			p, q := generatekeys.GeneratePrimeNumbers(100)
 
 			fmt.Printf("Values: P=%d, Q=%d\n", p, q)
 
-			// generate Alice's public key
+			// generate N
 			n := generatekeys.Product(p, q)
 
 			fmt.Printf("Value of N is %d\n", n)
 
-			// generate Alice Private Key
+			// generate E
 
 			e, err := generatekeys.E(n, p, q)
 			if err != nil {
 				log.Fatalf("program failed, err: %v", err)
 			}
 
-			fmt.Printf("Alice's Private Key is %d\n", e)
+			fmt.Printf("Value of E Key is %d\n", e)
 
 			phi := generatekeys.Phi(p, q)
 			d, err := generatekeys.D(n, e, phi)
@@ -40,7 +40,7 @@ func GenerateCMD() *cobra.Command {
 				log.Fatal(err)
 			}
 
-			fmt.Printf("Alice's Public Key is %d\n", d)
+			fmt.Printf("Value of D is %d\n", d)
 
 		},
 	}

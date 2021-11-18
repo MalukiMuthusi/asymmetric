@@ -7,27 +7,26 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var alicePrivateKey int
-var alicePublicKey int
-var bobPrivateKey int
-var bobPublicKey int
+var e int
+var n int
+var d int
 var msg int
 
 var rootCmd = &cobra.Command{
 	Use:   "asymmetric",
 	Short: "Asymmetric encrypt and decrypt messages",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Alice Encrypting the message: %d\n", msg)
+		fmt.Printf("Encrypting the message: %d\n", msg)
 
-		cypher := crypt.Encrypt(msg, uint64(alicePrivateKey), uint64(bobPublicKey))
+		cypher := crypt.Encrypt(msg, uint64(e), uint64(n))
 
 		fmt.Printf("Generated the cypher: %d\n", cypher)
 
-		fmt.Println("Bob will decrypt the cypher")
+		fmt.Println("Decrypting")
 
-		m := crypt.Decrypt(cypher, uint64(bobPrivateKey), uint64(alicePublicKey))
+		m := crypt.Decrypt(cypher, uint64(d), uint64(n))
 
-		fmt.Printf("Bob decrypted and obtained the message: %d\n", m)
+		fmt.Printf("Decrypted message: %d\n", m)
 	},
 }
 
@@ -37,11 +36,10 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().IntVarP(&msg, "msg", "m", 2, "message")
-	rootCmd.PersistentFlags().IntVarP(&alicePrivateKey, "ap", "a", 5, "Alice private key")
-	rootCmd.PersistentFlags().IntVarP(&alicePublicKey, "ab", "b", 14, "Alice Public key")
+	rootCmd.PersistentFlags().IntVarP(&e, "e", "e", 5, "value of e")
+	rootCmd.PersistentFlags().IntVarP(&n, "n", "n", 14, "value of n")
 
-	rootCmd.PersistentFlags().IntVarP(&bobPrivateKey, "bp", "c", 11, "Bob Private key")
-	rootCmd.PersistentFlags().IntVarP(&bobPublicKey, "bb", "d", 14, "bob Public key")
+	rootCmd.PersistentFlags().IntVarP(&d, "d", "d", 11, "value of d")
 
 	rootCmd.AddCommand(GenerateCMD())
 

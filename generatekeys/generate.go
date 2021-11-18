@@ -9,15 +9,15 @@ import (
 )
 
 // Generate two large prime numbers
-func GeneratePrimeNumbers() (uint64, uint64) {
-	p := prime.Primes(100)
-	l := len(p)
+func GeneratePrimeNumbers(n uint64) (uint64, uint64) {
+	p := prime.Primes(n)
+	l := len(p) - 1
 
-	r := rand.New(rand.NewSource(time.Now().Unix()))
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	i := r.Intn(l)
 	n1 := p[i]
 
-	r2 := rand.New(rand.NewSource(time.Now().Unix()))
+	r2 := rand.New(rand.NewSource(time.Now().UnixNano()))
 	i2 := r2.Intn(l)
 	n2 := p[i2]
 
@@ -37,7 +37,7 @@ func Phi(p, q uint64) uint64 {
 
 // choose e, a value less than the midpoint n
 func E(n, p, q uint64) (uint64, error) {
-	r := rand.New(rand.NewSource(time.Now().Unix()))
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	s := r.Int63n(int64(n / 2))
 	s2 := uint64(s)

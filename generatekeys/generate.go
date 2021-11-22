@@ -1,7 +1,6 @@
 package generatekeys
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 
@@ -35,31 +34,38 @@ func Phi(p, q uint64) uint64 {
 
 }
 
+func IsCoPrime(a, b uint64) bool {
+	gcd := 1
+	for i := uint64(1); i < b; i++ {
+		if a%i == 0 && b%i == 0 {
+			gcd += 1
+		}
+	}
+	return gcd == 1
+}
+
 // choose e, a value less than the midpoint n
 func E(n, p, q uint64) (uint64, error) {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 
-	s := r.Int63n(int64(n / 2))
-	s2 := uint64(s)
+	phi := Phi(p, q)
 
-	for i := s2; i > 0; i-- {
-		if i%p != 0 && i%q != 0 {
-			return uint64(i), nil
-		}
-	}
-
-	return 0, fmt.Errorf("no value of E found")
-}
-
-func D(n, e, phi uint64) (uint64, error) {
-	// d.e mod phi = 1
-
-	for i := uint64(1); i < n; i++ {
-		if (i*e)%phi == 1 {
+	for i := uint64(r.Int63n(int64(n / 2))); ; i = uint64(r.Int63n(int64(n / 2))) {
+		if !IsCoPrime(i, p) || !IsCoPrime(i, q) || !IsCoPrime(i, phi) {
 			return i, nil
 		}
 	}
 
-	return 0, fmt.Errorf("%s", "failed to calculate D")
+}
+
+func D(e, phi uint64) (uint64, error) {
+	// d.e mod phi = 1
+
+	d := uint64(1)
+	for (d*e)%phi != 1 || d == e {
+		d += 1
+	}
+
+	return d, nil
 
 }

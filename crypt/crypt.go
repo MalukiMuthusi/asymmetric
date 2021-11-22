@@ -1,27 +1,28 @@
 package crypt
 
 import (
-	"math"
+	"math/big"
 )
 
 // Encrypt a message using the receivers public key and the senders private key
-func Encrypt(msg int, e uint64, n uint64) uint64 {
+func Encrypt(msg, e, n big.Int) big.Int {
 	// E = msg ^ (privateKey) mod publicKey
-	p := math.Pow(float64(msg), float64(e))
-	pInt := uint64(p)
+	var pp big.Int
+	pp.Exp(&msg, &e, nil)
 
-	c := pInt % n
-
+	var c big.Int
+	c.Mod(&pp, &n)
 	return c
 }
 
 // Decrypt a message using a receivers private key and the senders public key
-func Decrypt(cypher uint64, d uint64, n uint64) uint64 {
+func Decrypt(c, d, n big.Int) big.Int {
 	// M = cypher ^ privateKey mod publicKey
 
-	p := math.Pow(float64(cypher), float64(d))
-	pInt := uint64(p)
+	var pp big.Int
+	pp.Exp(&c, &d, nil)
 
-	t := pInt % n
-	return t
+	var m big.Int
+	m.Mod(&pp, &n)
+	return m
 }

@@ -35,7 +35,7 @@ func GenerateCMD() *cobra.Command {
 			fmt.Printf("Value of E Key is %d\n", e)
 
 			phi := generatekeys.Phi(p, q)
-			d, err := generatekeys.D(n, e, phi)
+			d, err := generatekeys.D(e, phi)
 			if err != nil {
 				log.Fatal(err)
 			}

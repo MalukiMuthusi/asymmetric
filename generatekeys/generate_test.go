@@ -99,27 +99,27 @@ func TestIsCoPrime(t *testing.T) {
 			name: "happy case",
 			a:    *big.NewInt(14),
 			b:    *big.NewInt(5),
-			is:   false,
+			is:   true,
 		},
 		{
 			name: "case 2",
 			a:    *big.NewInt(21),
 			b:    *big.NewInt(14),
-			is:   true,
+			is:   false,
 		},
 
 		{
 			name: "case 3",
 			a:    *big.NewInt(98),
 			b:    *big.NewInt(5),
-			is:   false,
+			is:   true,
 		},
 
 		{
 			name: "case 4",
 			a:    *big.NewInt(99),
 			b:    *big.NewInt(3),
-			is:   true,
+			is:   false,
 		},
 	}
 
@@ -129,7 +129,7 @@ func TestIsCoPrime(t *testing.T) {
 			t.Parallel()
 
 			is := generatekeys.IsCoPrime(tt.a, tt.b)
-			assert.Equal(t, tt.is, is)
+			assert.EqualValues(t, tt.is, is)
 		})
 
 	}

@@ -16,7 +16,7 @@ func GenerateCMD() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("Generate n , e, d keys")
 
-			p, q := generatekeys.GeneratePrimeNumbers(*big.NewInt(100))
+			p, q := generatekeys.GeneratePrimeNumbers(*big.NewInt(1000))
 
 			fmt.Printf("Values: P=%d, Q=%d\n", p.Int64(), q.Int64())
 

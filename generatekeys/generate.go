@@ -36,6 +36,7 @@ func Product(n1, n2 big.Int) big.Int {
 
 // Remove the co-primes and count the number of digits that remain
 func Phi(p, q big.Int) big.Int {
+	// phi = (p-1)*(q-1)
 
 	n1 := new(big.Int).Sub(&p, big.NewInt(1))
 	n2 := new(big.Int).Sub(&q, big.NewInt(1))
@@ -47,17 +48,14 @@ func Phi(p, q big.Int) big.Int {
 
 // check if a is co prime of b
 func IsCoPrime(a, b big.Int) bool {
-
-	for i := big.NewInt(1); i.Int64() < b.Int64(); i.Add(i, big.NewInt(1)) {
-		if a.Mod(&a, i) == big.NewInt(0) && b.Mod(&b, i) == big.NewInt(0) {
-			return false
-		}
-	}
-	return true
+	one := big.NewInt(1)
+	gcd := new(big.Int).GCD(nil, nil, &a, &b)
+	return gcd.Cmp(one) == 0
 }
 
 // choose e, a value less than the midpoint n
 func E(n, p, q big.Int) big.Int {
+	// e < n/2
 	one := big.NewInt(1)
 	tw := big.NewInt(2)
 
@@ -71,9 +69,8 @@ func E(n, p, q big.Int) big.Int {
 	for {
 
 		for j := i; j.Cmp(tw) == 1; j.Sub(j, one) {
-			if IsCoPrime(*j, p) || IsCoPrime(*j, q) || IsCoPrime(*j, phi) {
+			if IsCoPrime(*j, phi) {
 				return *j
-
 			}
 		}
 

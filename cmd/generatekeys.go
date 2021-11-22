@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"math/big"
 
 	"github.com/malukimuthusi/asymmetric/generatekeys"
@@ -19,29 +18,25 @@ func GenerateCMD() *cobra.Command {
 
 			p, q := generatekeys.GeneratePrimeNumbers(*big.NewInt(100))
 
-			fmt.Printf("Values: P=%d, Q=%d\n", p, q)
+			fmt.Printf("Values: P=%d, Q=%d\n", p.Int64(), q.Int64())
 
 			// generate N
 			n := generatekeys.Product(p, q)
 
-			fmt.Printf("Value of N is %d\n", n)
+			fmt.Printf("Value of N = %d\n", n.Int64())
 
 			// generate E
 
-			e, err := generatekeys.E(n, p, q)
-			if err != nil {
-				log.Fatalf("program failed, err: %v", err)
-			}
+			e := generatekeys.E(n, p, q)
 
-			fmt.Printf("Value of E Key is %d\n", e)
+			fmt.Printf("Value of E Key = %d\n", e.Int64())
 
 			phi := generatekeys.Phi(p, q)
-			d, err := generatekeys.D(e, phi)
-			if err != nil {
-				log.Fatal(err)
-			}
+			fmt.Printf("Value of PHI = %d\n", phi.Int64())
 
-			fmt.Printf("Value of D is %d\n", d)
+			d := generatekeys.D(e, phi)
+
+			fmt.Printf("Value of D = %d\n", d.Int64())
 
 		},
 	}

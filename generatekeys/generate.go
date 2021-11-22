@@ -36,50 +36,70 @@ func Product(n1, n2 big.Int) big.Int {
 
 // Remove the co-primes and count the number of digits that remain
 func Phi(p, q big.Int) big.Int {
-	var phi big.Int
-	n1 := p.Sub(&p, big.NewInt(1))
-	n2 := q.Sub(&p, big.NewInt(1))
 
-	phi.Mul(n1, n2)
+	n1 := new(big.Int).Sub(&p, big.NewInt(1))
+	n2 := new(big.Int).Sub(&q, big.NewInt(1))
 
-	return phi
+	phi := new(big.Int).Mul(n1, n2)
+
+	return *phi
 }
 
-func IsCoPrime(a, b uint64) bool {
-	gcd := 1
-	for i := uint64(1); i < b; i++ {
-		if a%i == 0 && b%i == 0 {
-			gcd += 1
+// check if a is co prime of b
+func IsCoPrime(a, b big.Int) bool {
+
+	for i := big.NewInt(1); i.Int64() < b.Int64(); i.Add(i, big.NewInt(1)) {
+		if a.Mod(&a, i) == big.NewInt(0) && b.Mod(&b, i) == big.NewInt(0) {
+			return false
 		}
 	}
-	return gcd == 1
+	return true
 }
 
 // choose e, a value less than the midpoint n
 func E(n, p, q big.Int) big.Int {
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	one := big.NewInt(1)
+	tw := big.NewInt(2)
 
-	var n2 big.Int
-	n2.Rand(r, big.NewInt(0))
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	half := new(big.Int).Div(&n, tw)
+
+	i := new(big.Int).Rand(r, half)
 
 	phi := Phi(p, q)
 
-	for i := uint64(r.Int63n(int64(n / 2))); ; i = uint64(r.Int63n(int64(n / 2))) {
-		if !IsCoPrime(i, p) || !IsCoPrime(i, q) || !IsCoPrime(i, phi) {
-			return i, nil
+	for {
+
+		for j := i; j.Cmp(tw) == 1; j.Sub(j, one) {
+			if IsCoPrime(*j, p) || IsCoPrime(*j, q) || IsCoPrime(*j, phi) {
+				return *j
+
+			}
 		}
+
+		r = rand.New(rand.NewSource(time.Now().UnixNano()))
+		i = new(big.Int).Rand(r, half)
 	}
 
 }
 
-func D(e, phi uint64) (uint64, error) {
+func D(e, phi big.Int) big.Int {
 	// d.e mod phi = 1
 
-	d := uint64(1)
-	for (d*e)%phi != 1 || d == e {
-		d += 1
+	one := big.NewInt(1)
+
+	d := big.NewInt(1)
+	mod := new(big.Int)
+
+	for mod.Cmp(one) != 0 {
+
+		d = new(big.Int).Add(d, one)
+
+		x := new(big.Int).Mul(d, &e)
+
+		mod = new(big.Int).Mod(x, &phi)
 	}
 
-	return d, nil
+	return *d
 
 }

@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"math/big"
 
 	"github.com/malukimuthusi/asymmetric/generatekeys"
 	"github.com/spf13/cobra"
@@ -16,7 +17,7 @@ func GenerateCMD() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("Generate n , e, d keys")
 
-			p, q := generatekeys.GeneratePrimeNumbers(100)
+			p, q := generatekeys.GeneratePrimeNumbers(*big.NewInt(100))
 
 			fmt.Printf("Values: P=%d, Q=%d\n", p, q)
 

@@ -1,37 +1,48 @@
 package generatekeys
 
 import (
+	"math/big"
 	"math/rand"
 	"time"
-
-	"github.com/kavehmz/prime"
 )
 
 // Generate two large prime numbers
-func GeneratePrimeNumbers(n uint64) (uint64, uint64) {
-	p := prime.Primes(n)
-	l := len(p) - 1
-
+func GeneratePrimeNumbers(n big.Int) (big.Int, big.Int) {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	i := r.Intn(l)
-	n1 := p[i]
+	var p big.Int
+	p.Rand(r, &n)
 
-	r2 := rand.New(rand.NewSource(time.Now().UnixNano()))
-	i2 := r2.Intn(l)
-	n2 := p[i2]
+	for !p.ProbablyPrime(int(p.Int64())) {
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		p.Rand(r, &n)
+	}
 
-	return n1, n2
+	r = rand.New(rand.NewSource(time.Now().UnixNano()))
+	var q big.Int
+	q.Rand(r, &n)
+	for !q.ProbablyPrime(int(q.Int64())) {
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		q.Rand(r, &n)
+	}
+
+	return p, q
 }
 
-func Product(n1, n2 uint64) uint64 {
-	return n1 * n2
+func Product(n1, n2 big.Int) big.Int {
+	var p big.Int
+	p.Mul(&n1, &n2)
+	return p
 }
 
 // Remove the co-primes and count the number of digits that remain
-func Phi(p, q uint64) uint64 {
+func Phi(p, q big.Int) big.Int {
+	var phi big.Int
+	n1 := p.Sub(&p, big.NewInt(1))
+	n2 := q.Sub(&p, big.NewInt(1))
 
-	return (p - 1) * (q - 1)
+	phi.Mul(n1, n2)
 
+	return phi
 }
 
 func IsCoPrime(a, b uint64) bool {
@@ -45,8 +56,11 @@ func IsCoPrime(a, b uint64) bool {
 }
 
 // choose e, a value less than the midpoint n
-func E(n, p, q uint64) (uint64, error) {
+func E(n, p, q big.Int) big.Int {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	var n2 big.Int
+	n2.Rand(r, big.NewInt(0))
 
 	phi := Phi(p, q)
 

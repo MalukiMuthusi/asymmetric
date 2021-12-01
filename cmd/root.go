@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"crypto/sha1"
 	"fmt"
 	"math/big"
 
@@ -21,6 +22,12 @@ var rootCmd = &cobra.Command{
 		fmt.Printf("Encrypting the message: %d\n", msg)
 
 		c := crypt.Encrypt(*big.NewInt(msg), *big.NewInt(e), *big.NewInt(n))
+
+		h := sha1.New()
+		h.Write([]byte(c.String()))
+
+		bs := h.Sum([]byte(c.String()))
+		fmt.Printf("The hash of the Cypher = %x\n", bs)
 
 		fmt.Printf("Generated the cypher: %d\n", c.Int64())
 
